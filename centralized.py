@@ -5,7 +5,8 @@ from torchvision.transforms import Compose, ToTensor, Normalize
 from torch.utils.data import DataLoader
 from torchvision.datasets import CIFAR10
 
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+DEVICE = torch.device("cpu")
 
 class Net(nn.Module):
 
@@ -13,7 +14,7 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
         self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(3, 16, 5)
+        self.conv2 = nn.Conv2d(6, 16, 5)
         self.fc1 = nn.Linear(16 * 5 * 5, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
@@ -51,3 +52,13 @@ def load_data():
     trainset = CIFAR10("./data", train=True, download=True, transform=trf)
     testset = CIFAR10("./data", train=False, download=True, transform=trf)
     return DataLoader(trainset, batch_size=32, shuffle=True), DataLoader(testset)
+
+def load_model():
+    return Net().to(DEVICE)
+
+if __name__ == "__main__":
+    net = load_model()
+    trainloader, testloader = load_data()
+    train(net, trainloader, 5)
+    loss, accuracy = test(net, testloader)
+    print(f"Loss: {loss:.5f}, Accuracy: {accuracy:.3f}")
