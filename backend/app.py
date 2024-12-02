@@ -67,8 +67,8 @@ def is_image(file):
         return False
 
 # Routes
-@app.route('/api/upload', methods=['POST'])
-def upload_image():
+@app.route('/api/predict', methods=['POST'])
+def predict_image():
     if 'image' not in request.files:
         return jsonify({'error': 'No image part in the request'}), 400
 
