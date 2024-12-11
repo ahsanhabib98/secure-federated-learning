@@ -32,7 +32,8 @@ python federate_learning_dp_smc.py
 ````
 ### Run Flask App
 ````
-python federate_learning.py
+cd backend
+python federate_learning_dp_smc.py
 flask db init
 flask db migrate
 flask db upgrade
